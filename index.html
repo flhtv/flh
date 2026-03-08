@@ -4,29 +4,36 @@
 <meta charset="UTF-8">
 <title>فله تيفي</title>
 <style>
-body{
-  font-family:Arial;
-  background:#111;
-  color:white;
-  text-align:center;
-  margin-top:60px;
+body {
+    font-family: Arial, sans-serif;
+    background: #111;
+    color: white;
+    text-align: center;
+    margin-top: 50px;
 }
-button{
-  padding:12px 25px;
-  margin:8px;
-  font-size:18px;
-  border:none;
-  border-radius:10px;
-  cursor:pointer;
-  background:#ff9800;
-  color:white;
+button {
+    padding: 12px 25px;
+    margin: 8px;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    background: #ff9800;
+    color: white;
+    transition: 0.2s;
 }
-iframe{
-  margin-top:20px;
-  width:80%;
-  max-width:900px;
-  height:500px;
-  border:none;
+button:hover {
+    background: #ffa733;
+}
+iframe {
+    margin-top: 20px;
+    width: 80%;
+    max-width: 900px;
+    height: 500px;
+    border: none;
+}
+h1, h2 {
+    margin-bottom: 15px;
 }
 </style>
 </head>
@@ -56,17 +63,17 @@ const shows = {};
 const lines = data.trim().split("\n");
 let currentShow="", currentEp="", currentLink="";
 
-lines.forEach(line=>{
-  line = line.trim();
-  if(line.startsWith("المسلسل")){
-    currentShow = line.split(":")[1].trim();
-    if(!shows[currentShow]) shows[currentShow]={};
-  }
-  if(line.startsWith("الحلقة")) currentEp = line.split(":")[1].trim();
-  if(line.startsWith("السكربت")){
-    currentLink = line.split(":")[1].trim();
-    shows[currentShow][currentEp] = currentLink;
-  }
+lines.forEach(line => {
+    line = line.trim();
+    if(line.startsWith("المسلسل")){
+        currentShow = line.split(":")[1].trim();
+        if(!shows[currentShow]) shows[currentShow] = {};
+    }
+    if(line.startsWith("الحلقة")) currentEp = line.split(":")[1].trim();
+    if(line.startsWith("السكربت")){
+        currentLink = line.split(":")[1].trim();
+        shows[currentShow][currentEp] = currentLink;
+    }
 });
 
 // عناصر الصفحة
@@ -76,24 +83,24 @@ const videoContainer = document.getElementById("videoContainer");
 
 // إنشاء أزرار المسلسلات
 for(let show in shows){
-  let btn = document.createElement("button");
-  btn.innerText = show;
-  btn.onclick = ()=>{
-    document.getElementById("title").innerText = show;
-    episodesDiv.innerHTML = "";
-    videoContainer.innerHTML = "";
-    
-    // إنشاء أزرار الحلقات
-    for(let ep in shows[show]){
-      let epBtn = document.createElement("button");
-      epBtn.innerText = "الحلقة "+ep;
-      epBtn.onclick = ()=>{
-        videoContainer.innerHTML = `<iframe src="${shows[show][ep]}" allow="autoplay" allowfullscreen></iframe>`;
-      }
-      episodesDiv.appendChild(epBtn);
-    }
-  }
-  seriesDiv.appendChild(btn);
+    let btn = document.createElement("button");
+    btn.innerText = show;
+    btn.onclick = () => {
+        document.getElementById("title").innerText = show;
+        episodesDiv.innerHTML = "";
+        videoContainer.innerHTML = "";
+
+        // إنشاء أزرار الحلقات
+        for(let ep in shows[show]){
+            let epBtn = document.createElement("button");
+            epBtn.innerText = "الحلقة " + ep;
+            epBtn.onclick = () => {
+                videoContainer.innerHTML = `<iframe src="${shows[show][ep]}" allow="autoplay" allowfullscreen></iframe>`;
+            };
+            episodesDiv.appendChild(epBtn);
+        }
+    };
+    seriesDiv.appendChild(btn);
 }
 </script>
 
