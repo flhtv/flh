@@ -3,140 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <title>فله تيفي</title>
-
 <style>
-
 body{
-font-family:Arial;
-background:#111;
-color:white;
-text-align:center;
-margin-top:60px;
+  font-family:Arial;
+  background:#111;
+  color:white;
+  text-align:center;
+  margin-top:60px;
 }
-
 button{
-padding:12px 25px;
-margin:8px;
-font-size:18px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-background:#ff9800;
-color:white;
+  padding:12px 25px;
+  margin:8px;
+  font-size:18px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  background:#ff9800;
+  color:white;
 }
-
-video{
-margin-top:20px;
-width:80%;
-max-width:900px;
+iframe{
+  margin-top:20px;
+  width:80%;
+  max-width:900px;
+  height:500px;
+  border:none;
 }
-
 </style>
-
 </head>
-
 <body>
 
-<h1>فله تيفي يرحب بضيوفه 👋</h1>
+<h1>فله تيفي يرحم بضيوفه 👋</h1>
 
 <h2>المسلسلات</h2>
-
 <div id="series"></div>
 
 <h2 id="title"></h2>
-
 <div id="episodes"></div>
-
-<video id="player" controls></video>
+<div id="videoContainer"></div>
 
 <script>
-
+// بيانات المسلسلات والحلقات
 const data = `
 المسلسل : شباب البومب
 الحلقة : 18
-السكربت : https://drive.google.com/uc?export=download&id=1Ib_cvkdmo7sKxQNdZfViNWlJ0EkgIxdr
+السكربت : https://drive.google.com/file/d/1Ib_cvkdmo7sKxQNdZfViNWlJ0EkgIxdr/preview
 
 المسلسل : شارع الأعشى
-الحلقة : 19
-السكربت : https://cool-limit-85f8.work123-d68.workers.dev/?token=aHR0cHM6Ly92aWQzLnJtLWtsZWVqLTIwMjYtYmFrLnNpdGUvU2hhcmVlLUFsLUFzaGEtMi8xOS5tcDQ.1772929558.10d31cda01c6afc312a06e3eeaffa6967203de4a21dcce5f9f8988f50f2520b4
 `;
 
-const shows = {}
+// تحويل البيانات لكائن JS
+const shows = {};
+const lines = data.trim().split("\n");
+let currentShow="", currentEp="", currentLink="";
 
-const lines = data.split("\n")
+lines.forEach(line=>{
+  line = line.trim();
+  if(line.startsWith("المسلسل")){
+    currentShow = line.split(":")[1].trim();
+    if(!shows[currentShow]) shows[currentShow]={};
+  }
+  if(line.startsWith("الحلقة")) currentEp = line.split(":")[1].trim();
+  if(line.startsWith("السكربت")){
+    currentLink = line.split(":")[1].trim();
+    shows[currentShow][currentEp] = currentLink;
+  }
+});
 
-let currentShow=""
-let currentEp=""
-let currentLink=""
+// عناصر الصفحة
+const seriesDiv = document.getElementById("series");
+const episodesDiv = document.getElementById("episodes");
+const videoContainer = document.getElementById("videoContainer");
 
-for(let line of lines){
-
-line=line.trim()
-
-if(line.startsWith("المسلسل")){
-
-currentShow=line.split(":")[1].trim()
-
-if(!shows[currentShow]) shows[currentShow]={}
-
-}
-
-if(line.startsWith("الحلقة")){
-
-currentEp=line.split(":")[1].trim()
-
-}
-
-if(line.startsWith("السكربت")){
-
-currentLink=line.split(":")[1].trim()
-
-shows[currentShow][currentEp]=currentLink
-
-}
-
-}
-
-const seriesDiv=document.getElementById("series")
-const episodesDiv=document.getElementById("episodes")
-const player=document.getElementById("player")
-
+// إنشاء أزرار المسلسلات
 for(let show in shows){
-
-let btn=document.createElement("button")
-
-btn.innerText=show
-
-btn.onclick=()=>{
-
-document.getElementById("title").innerText=show
-
-episodesDiv.innerHTML=""
-
-for(let ep in shows[show]){
-
-let epBtn=document.createElement("button")
-
-epBtn.innerText="الحلقة "+ep
-
-epBtn.onclick=()=>{
-
-player.src=shows[show][ep]
-
-player.play()
-
+  let btn = document.createElement("button");
+  btn.innerText = show;
+  btn.onclick = ()=>{
+    document.getElementById("title").innerText = show;
+    episodesDiv.innerHTML = "";
+    videoContainer.innerHTML = "";
+    
+    // إنشاء أزرار الحلقات
+    for(let ep in shows[show]){
+      let epBtn = document.createElement("button");
+      epBtn.innerText = "الحلقة "+ep;
+      epBtn.onclick = ()=>{
+        videoContainer.innerHTML = `<iframe src="${shows[show][ep]}" allow="autoplay" allowfullscreen></iframe>`;
+      }
+      episodesDiv.appendChild(epBtn);
+    }
+  }
+  seriesDiv.appendChild(btn);
 }
-
-episodesDiv.appendChild(epBtn)
-
-}
-
-}
-
-seriesDiv.appendChild(btn)
-
-}
-
 </script>
 
 </body>
