@@ -13,7 +13,7 @@ h1,h2{margin-bottom:15px;}
 </head>
 <body>
 
-<h1>فله تيفي يهلّي بضيوفه 👋</h1>
+<h1>فله تيفي يرحم بضيوفه 👋</h1>
 
 <h2>المسلسلات</h2>
 <div id="series"></div>
@@ -26,7 +26,7 @@ h1,h2{margin-bottom:15px;}
 const data = `
 المسلسل : شباب البومب
 الحلقة : 18
-السكربت : https://www.dropbox.com/scl/fi/qzezvgtm8j1t6iu2k788j/18.mp4?rlkey=8yeskvgdas6uu3678x55kc7qn&dl=0&preview=1
+السكربت : https://www.dropbox.com/scl/fi/qzezvgtm8j1t6iu2k788j/18.mp4?rlkey=8yeskvgdas6uu3678x55kc7qn&st=j1ovjg31&preview=1
 المسلسل : شارع الأعشى
 `;
 
@@ -57,24 +57,18 @@ for(let show in shows){
     btn.onclick=()=>{
         document.getElementById("title").innerText=show;
         episodesDiv.innerHTML="";
-        player.src="";
+        player.src=""; // تفريغ الفيديو عند تغيير المسلسل
         for(let ep in shows[show]){
             let epBtn=document.createElement("button");
             epBtn.innerText="الحلقة "+ep;
             epBtn.onclick=()=>{
-                player.src=shows[show][ep];
+                player.src=shows[show][ep]; // يظهر الفيديو عند الضغط فقط
             };
             episodesDiv.appendChild(epBtn);
         }
     };
     seriesDiv.appendChild(btn);
 }
-
-// لتشغيل الحلقة الأولى مباشرة عند فتح الموقع
-const firstShow = Object.keys(shows)[0];
-const firstEp = Object.keys(shows[firstShow])[0];
-document.getElementById("title").innerText = firstShow;
-player.src = shows[firstShow][firstEp];
 </script>
 
 </body>
