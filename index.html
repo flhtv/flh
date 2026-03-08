@@ -4,38 +4,11 @@
 <meta charset="UTF-8">
 <title>فله تيفي</title>
 <style>
-body {
-    font-family: Arial, sans-serif;
-    background: #111;
-    color: white;
-    text-align: center;
-    margin-top: 50px;
-}
-button {
-    padding: 12px 25px;
-    margin: 8px;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    background: #ff9800;
-    color: white;
-    transition: 0.2s;
-}
-button:hover {
-    background: #ffa733;
-}
-video {
-    margin-top: 20px;
-    width: 80%;
-    max-width: 900px;
-    height: auto;
-    border-radius: 10px;
-    background: black;
-}
-h1, h2 {
-    margin-bottom: 15px;
-}
+body {font-family:Arial;background:#111;color:white;text-align:center;margin-top:50px;}
+button{padding:12px 25px;margin:8px;font-size:18px;border:none;border-radius:10px;cursor:pointer;background:#ff9800;color:white;transition:0.2s;}
+button:hover{background:#ffa733;}
+video{margin-top:20px;width:80%;max-width:900px;height:auto;border-radius:10px;background:black;}
+h1,h2{margin-bottom:15px;}
 </style>
 </head>
 <body>
@@ -47,7 +20,7 @@ h1, h2 {
 
 <h2 id="title"></h2>
 <div id="episodes"></div>
-<video id="player" controls></video>
+<video id="player" controls autoplay></video>
 
 <script>
 const data = `
@@ -61,35 +34,35 @@ const shows = {};
 const lines = data.trim().split("\n");
 let currentShow="", currentEp="", currentLink="";
 
-lines.forEach(line => {
-    line = line.trim();
+lines.forEach(line=>{
+    line=line.trim();
     if(line.startsWith("المسلسل")){
-        currentShow = line.split(":")[1].trim();
-        if(!shows[currentShow]) shows[currentShow] = {};
+        currentShow=line.split(":")[1].trim();
+        if(!shows[currentShow]) shows[currentShow]={};
     }
-    if(line.startsWith("الحلقة")) currentEp = line.split(":")[1].trim();
+    if(line.startsWith("الحلقة")) currentEp=line.split(":")[1].trim();
     if(line.startsWith("السكربت")){
-        currentLink = line.split(":")[1].trim();
-        shows[currentShow][currentEp] = currentLink;
+        currentLink=line.split(":")[1].trim();
+        shows[currentShow][currentEp]=currentLink;
     }
 });
 
-const seriesDiv = document.getElementById("series");
-const episodesDiv = document.getElementById("episodes");
-const player = document.getElementById("player");
+const seriesDiv=document.getElementById("series");
+const episodesDiv=document.getElementById("episodes");
+const player=document.getElementById("player");
 
 for(let show in shows){
-    let btn = document.createElement("button");
-    btn.innerText = show;
-    btn.onclick = () => {
-        document.getElementById("title").innerText = show;
-        episodesDiv.innerHTML = "";
-        player.src = "";
+    let btn=document.createElement("button");
+    btn.innerText=show;
+    btn.onclick=()=>{
+        document.getElementById("title").innerText=show;
+        episodesDiv.innerHTML="";
+        player.src="";
         for(let ep in shows[show]){
-            let epBtn = document.createElement("button");
-            epBtn.innerText = "الحلقة " + ep;
-            epBtn.onclick = () => {
-                player.src = shows[show][ep];
+            let epBtn=document.createElement("button");
+            epBtn.innerText="الحلقة "+ep;
+            epBtn.onclick=()=>{
+                player.src=shows[show][ep];
                 player.play();
             };
             episodesDiv.appendChild(epBtn);
@@ -97,6 +70,12 @@ for(let show in shows){
     };
     seriesDiv.appendChild(btn);
 }
+
+// لتشغيل الحلقة الأولى مباشرة عند فتح الموقع
+const firstShow = Object.keys(shows)[0];
+const firstEp = Object.keys(shows[firstShow])[0];
+document.getElementById("title").innerText = firstShow;
+player.src = shows[firstShow][firstEp];
 </script>
 
 </body>
