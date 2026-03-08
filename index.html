@@ -25,12 +25,13 @@ button {
 button:hover {
     background: #ffa733;
 }
-iframe {
+video {
     margin-top: 20px;
     width: 80%;
     max-width: 900px;
-    height: 500px;
-    border: none;
+    height: auto;
+    border-radius: 10px;
+    background: black;
 }
 h1, h2 {
     margin-bottom: 15px;
@@ -39,26 +40,23 @@ h1, h2 {
 </head>
 <body>
 
-<h1>فله تيفي يرحب بضيوفه 👋</h1>
+<h1>فله تيفي يرحم بضيوفه 👋</h1>
 
 <h2>المسلسلات</h2>
 <div id="series"></div>
 
 <h2 id="title"></h2>
 <div id="episodes"></div>
-<div id="videoContainer"></div>
+<video id="player" controls></video>
 
 <script>
-// بيانات المسلسلات والحلقات
 const data = `
 المسلسل : شباب البومب
 الحلقة : 18
-السكربت : https://drive.google.com/file/d/1Ib_cvkdmo7sKxQNdZfViNWlJ0EkgIxdr/view?usp=drivesdk
-
+السكربت : https://drive.google.com/uc?export=download&id=1Ib_cvkdmo7sKxQNdZfViNWlJ0EkgIxdr
 المسلسل : شارع الأعشى
 `;
 
-// تحويل البيانات لكائن JS
 const shows = {};
 const lines = data.trim().split("\n");
 let currentShow="", currentEp="", currentLink="";
@@ -76,26 +74,23 @@ lines.forEach(line => {
     }
 });
 
-// عناصر الصفحة
 const seriesDiv = document.getElementById("series");
 const episodesDiv = document.getElementById("episodes");
-const videoContainer = document.getElementById("videoContainer");
+const player = document.getElementById("player");
 
-// إنشاء أزرار المسلسلات
 for(let show in shows){
     let btn = document.createElement("button");
     btn.innerText = show;
     btn.onclick = () => {
         document.getElementById("title").innerText = show;
         episodesDiv.innerHTML = "";
-        videoContainer.innerHTML = "";
-
-        // إنشاء أزرار الحلقات
+        player.src = "";
         for(let ep in shows[show]){
             let epBtn = document.createElement("button");
             epBtn.innerText = "الحلقة " + ep;
             epBtn.onclick = () => {
-                videoContainer.innerHTML = `<iframe src="${shows[show][ep]}" allow="autoplay" allowfullscreen></iframe>`;
+                player.src = shows[show][ep];
+                player.play();
             };
             episodesDiv.appendChild(epBtn);
         }
