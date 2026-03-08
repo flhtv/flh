@@ -7,26 +7,26 @@
 body {font-family:Arial;background:#111;color:white;text-align:center;margin-top:50px;}
 button{padding:12px 25px;margin:8px;font-size:18px;border:none;border-radius:10px;cursor:pointer;background:#ff9800;color:white;transition:0.2s;}
 button:hover{background:#ffa733;}
-video{margin-top:20px;width:80%;max-width:900px;height:auto;border-radius:10px;background:black;}
+iframe{margin-top:20px;width:80%;max-width:900px;height:500px;border:none;border-radius:10px;background:black;}
 h1,h2{margin-bottom:15px;}
 </style>
 </head>
 <body>
 
-<h1>فله تيفي يرحب بضيوفه 👋</h1>
+<h1>فله تيفي يهلّي بضيوفه 👋</h1>
 
 <h2>المسلسلات</h2>
 <div id="series"></div>
 
 <h2 id="title"></h2>
 <div id="episodes"></div>
-<video id="player" controls autoplay></video>
+<iframe id="player" allowfullscreen></iframe>
 
 <script>
 const data = `
 المسلسل : شباب البومب
 الحلقة : 18
-السكربت : https://www.dropbox.com/scl/fi/qzezvgtm8j1t6iu2k788j/18.mp4?rlkey=8yeskvgdas6uu3678x55kc7qn&st=qbgkrj56&raw=1
+السكربت : https://www.dropbox.com/scl/fi/qzezvgtm8j1t6iu2k788j/18.mp4?rlkey=8yeskvgdas6uu3678x55kc7qn&dl=0&preview=1
 المسلسل : شارع الأعشى
 `;
 
@@ -63,7 +63,6 @@ for(let show in shows){
             epBtn.innerText="الحلقة "+ep;
             epBtn.onclick=()=>{
                 player.src=shows[show][ep];
-                player.play();
             };
             episodesDiv.appendChild(epBtn);
         }
